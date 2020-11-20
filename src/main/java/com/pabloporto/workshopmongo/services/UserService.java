@@ -13,7 +13,7 @@ public class UserService {
 
     private final UserRepository repo;
 
-    private UserService(UserRepository repo) {
+    public UserService(UserRepository repo) {
         this.repo = repo;
     }
 
@@ -21,11 +21,9 @@ public class UserService {
        return repo.findAll();
     }
 
-    public Optional<User> findById(String id){
+    public User findById(String id) {
         Optional<User> user = repo.findById(id);
-        if(user == null){
-            throw new ObjectNotFoundException("Object not found");
-        }
-        return user;
+        return user.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+
     }
 }
