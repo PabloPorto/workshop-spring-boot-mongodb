@@ -1,6 +1,7 @@
 package com.pabloporto.workshopmongo.services;
 
 import com.pabloporto.workshopmongo.domain.User;
+import com.pabloporto.workshopmongo.dto.UserDTO;
 import com.pabloporto.workshopmongo.repository.UserRepository;
 import com.pabloporto.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,12 @@ public class UserService {
         Optional<User> user = repo.findById(id);
         return user.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 
+    }
+
+    public User insert(User user){
+        return repo.insert(user);
+    }
+    public User fromDto(UserDTO userDTO){
+        return new User(userDTO.getId(),userDTO.getName(), userDTO.getEmail());
     }
 }
