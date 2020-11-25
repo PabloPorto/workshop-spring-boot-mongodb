@@ -1,5 +1,6 @@
 package com.pabloporto.workshopmongo.resourses;
 
+import com.pabloporto.workshopmongo.domain.Post;
 import com.pabloporto.workshopmongo.domain.User;
 import com.pabloporto.workshopmongo.dto.UserDTO;
 import com.pabloporto.workshopmongo.services.UserService;
@@ -29,11 +30,7 @@ public class UserResourse {
         return ResponseEntity.ok().body(listDto);
     }
 
-    @RequestMapping(value= "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<UserDTO> findById(@PathVariable String id){
-        User user = service.findById(id);
-        return ResponseEntity.ok().body(new UserDTO(user));
-    }
+
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> insert(@RequestBody UserDTO userDto){
@@ -41,9 +38,13 @@ public class UserResourse {
         user = service.insert(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
+    }  @RequestMapping(value= "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<UserDTO> findById(@PathVariable String id){
+        User user = service.findById(id);
+        return ResponseEntity.ok().body(new UserDTO(user));
     }
 
-
+    @RequestMapping(value= "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> delete(@PathVariable String id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
@@ -56,5 +57,11 @@ public class UserResourse {
         user = service.update(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value= "/{id}/posts", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id){
+        User user = service.findById(id);
+        return ResponseEntity.ok().body(user.getPosts());
     }
 }
