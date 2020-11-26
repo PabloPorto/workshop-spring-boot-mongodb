@@ -3,6 +3,7 @@ package com.pabloporto.workshopmongo.resourses;
 import com.pabloporto.workshopmongo.domain.Post;
 import com.pabloporto.workshopmongo.domain.User;
 import com.pabloporto.workshopmongo.dto.UserDTO;
+import com.pabloporto.workshopmongo.resourses.util.URL;
 import com.pabloporto.workshopmongo.services.PostService;
 import com.pabloporto.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,4 +27,17 @@ public class PostResourse {
         Post post = service.findById(id);
         return ResponseEntity.ok().body(post);
     }
+
+    @RequestMapping(value= "/titlesearch", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text){
+        text = URL.decodeParam(text);
+        List<Post> list = service.findByTitle(text);
+        return ResponseEntity.ok().body(list);
+    }
+
+
+
+
+
+
 }
